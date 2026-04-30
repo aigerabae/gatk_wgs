@@ -25,6 +25,18 @@ conda create -n gatk-env -c bioconda -c conda-forge \
   python=3.10
 
 # Activate environment
+conda init
+```
+
+In another shell saving new version 
+```bash
+docker commit 50aa806dd4e0 gatk:v2.0
+docker run -it -v /media/ds1821p_III/aserikzhan/variant_calling/:/home gatk:v2.0 bash
+cd ../home
+```
+
+Continuing:
+```bash
 conda activate gatk-env
 
 # Verify installation
@@ -32,18 +44,20 @@ gatk --version
 # Expected output: The Genome Analysis Toolkit (GATK) v4.5.0.0
 
 # Create reference directory
-mkdir -p ~/genomics/references
-cd ~/genomics/references
+mkdir -p genomics/references
+cd /genomics/references
 
-# Download human reference genome (GRCh38/hg38)
-wget https://storage.googleapis.com/genomics-public-data/resources/broad/hg38/v0/Homo_sapiens_assembly38.fasta
-wget https://storage.googleapis.com/genomics-public-data/resources/broad/hg38/v0/Homo_sapiens_assembly38.fasta.fai
-wget https://storage.googleapis.com/genomics-public-data/resources/broad/hg38/v0/Homo_sapiens_assembly38.dict
+# Download human reference genome (GRCh38/hg38) - the original didn't work so i used ftp
+wget ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg38/Homo_sapiens_assembly38.fasta.gz
+
+# stopped here; will download rest when the first one finishes
+wget ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg38/Homo_sapiens_assembly38.fasta.fai
+wget ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg38/Homo_sapiens_assembly38.dict
 
 # Download known sites (for BQSR)
-wget https://storage.googleapis.com/genomics-public-data/resources/broad/hg38/v0/Homo_sapiens_assembly38.dbsnp138.vcf
-wget https://storage.googleapis.com/genomics-public-data/resources/broad/hg38/v0/Homo_sapiens_assembly38.known_indels.vcf.gz
-wget https://storage.googleapis.com/genomics-public-data/resources/broad/hg38/v0/Mills_and_1000G_gold_standard.indels.hg38.vcf.gz
+wget ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg38/Homo_sapiens_assembly38.dbsnp138.vcf
+wget ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg38/Homo_sapiens_assembly38.known_indels.vcf.gz
+wget ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg38/Mills_and_1000G_gold_standard.indels.hg38.vcf.gz
 
 # Index VCF files
 gatk IndexFeatureFile -I Homo_sapiens_assembly38.dbsnp138.vcf
