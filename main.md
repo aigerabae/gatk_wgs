@@ -62,9 +62,9 @@ wget ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg38/Mills_and_1000
 
 # stopped here because im waiting for 2 big files to finish downloading; not sure if i need to unzip them first
 
-# Index VCF files
+# Index VCF files (didn't run it yet)
 gatk IndexFeatureFile -I dbsnp_146.hg.vcf.gz
 gatk IndexFeatureFile -I Mills_and_1000G_gold_standard.indels.hg38.vcf.gz
 
-# Create BWA index
+# Create BWA index - running rn
 bwa index Homo_sapiens_assembly38.fasta.gz
