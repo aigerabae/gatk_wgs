@@ -49,20 +49,22 @@ cd /genomics/references
 
 # Download human reference genome (GRCh38/hg38) - the original didn't work so i used ftp
 wget ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg38/Homo_sapiens_assembly38.fasta.gz
-
-# stopped here; will download rest when the first one finishes
 wget ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg38/Homo_sapiens_assembly38.fasta.fai
 wget ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg38/Homo_sapiens_assembly38.dict
 
 # Download known sites (for BQSR)
-wget ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg38/Homo_sapiens_assembly38.dbsnp138.vcf
-wget ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg38/Homo_sapiens_assembly38.known_indels.vcf.gz
+wget ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg38/dbsnp_146.hg.vcf.gz
 wget ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg38/Mills_and_1000G_gold_standard.indels.hg38.vcf.gz
 
+# we'll have dbsnp_146.hg.vcf.gz instead of Homo_sapiens_assembly38.dbsnp138.vcf
+# Mills_and_1000G_gold_standard.indels.hg38.vcf.gz = Mills_and_1000G_gold_standard.indels.hg38.vcf.gz stays the same
+3 I don't have Homo_sapiens_assembly38.known_indels.vcf.gz so we'll do without it
+
+# stopped here because im waiting for 2 big files to finish downloading; not sure if i need to unzip them first
+
 # Index VCF files
-gatk IndexFeatureFile -I Homo_sapiens_assembly38.dbsnp138.vcf
-gatk IndexFeatureFile -I Homo_sapiens_assembly38.known_indels.vcf.gz
+gatk IndexFeatureFile -I dbsnp_146.hg.vcf.gz
 gatk IndexFeatureFile -I Mills_and_1000G_gold_standard.indels.hg38.vcf.gz
 
 # Create BWA index
-bwa index Homo_sapiens_assembly38.fasta
+bwa index Homo_sapiens_assembly38.fasta.gz
