@@ -53,7 +53,7 @@ wget ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg38/Homo_sapiens_a
 wget ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg38/Homo_sapiens_assembly38.dict
 
 # Download known sites (for BQSR)
-wget ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg38/dbsnp_146.hg.vcf.gz
+wget ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg38/dbsnp_146.hg.vcf.gz                                        # i also downloaded is searately into base folder because i thoight my download crashed so now its redundant
 wget ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg38/Mills_and_1000G_gold_standard.indels.hg38.vcf.gz
 
 # we'll have dbsnp_146.hg.vcf.gz instead of Homo_sapiens_assembly38.dbsnp138.vcf
@@ -62,9 +62,30 @@ wget ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg38/Mills_and_1000
 
 # stopped here because im waiting for 2 big files to finish downloading; not sure if i need to unzip them first
 
-# Index VCF files (didn't run it yet)
-gatk IndexFeatureFile -I dbsnp_146.hg.vcf.gz
-gatk IndexFeatureFile -I Mills_and_1000G_gold_standard.indels.hg38.vcf.gz
+gunzip dbsnp_146.hg38.vcf.gz
+gatk IndexFeatureFile -I dbsnp_146.hg38.vcf                # still running
+gunzip 
+gatk IndexFeatureFile -I Mills_and_1000G_gold_standard.indels.hg38.vcf.gz         # turns out gunzipping wasn't necesaru
 
-# Create BWA index - running rn
-bwa index Homo_sapiens_assembly38.fasta.gz
+# Create BWA index
+bwa index Homo_sapiens_assembly38.fasta.gz              # still running
+```
+
+
+Alignment (didn't edit the code or run or anything yet):
+```bash
+# Set variables
+REF=~/genomics/references/Homo_sapiens_assembly38.fasta
+SAMPLE_ID="Patient001"
+FASTQ_R1="Patient001_R1.fastq.gz"
+FASTQ_R2="Patient001_R2.fastq.gz"
+
+# Run BWA-MEM alignment
+bwa mem -t 16 -R "@RG\tID:${SAMPLE_ID}\tSM:${SAMPLE_ID}\tPL:ILLUMINA" \
+  ${REF} ${FASTQ_R1} ${FASTQ_R2} | \
+  samtools view -Sb - | \
+  samtools sort -@ 16 -o ${SAMPLE_ID}.sorted.bam -
+
+# Index BAM file
+samtools index ${SAMPLE_ID}.sorted.bam
+```
