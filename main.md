@@ -16,7 +16,7 @@ cd ../home/
 
 Installations (failed without docker)
 ```bash
-# Create isolated environment
+# Create isolated environment 
 conda create -n gatk-env -c bioconda -c conda-forge \
   gatk4=4.5.0.0 \
   bwa=0.7.17 \
@@ -45,7 +45,8 @@ gatk --version
 
 # Create reference directory
 mkdir -p genomics/references
-cd /genomics/references
+cd genomics/references/
+
 
 # Download human reference genome (GRCh38/hg38) - the original didn't work so i used ftp
 wget ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg38/Homo_sapiens_assembly38.fasta.gz
@@ -60,15 +61,14 @@ wget ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg38/Mills_and_1000
 # Mills_and_1000G_gold_standard.indels.hg38.vcf.gz = Mills_and_1000G_gold_standard.indels.hg38.vcf.gz stays the same
 3 I don't have Homo_sapiens_assembly38.known_indels.vcf.gz so we'll do without it
 
-# stopped here because im waiting for 2 big files to finish downloading; not sure if i need to unzip them first
-
-gunzip dbsnp_146.hg38.vcf.gz
-gatk IndexFeatureFile -I dbsnp_146.hg38.vcf                # still running
-gunzip 
-gatk IndexFeatureFile -I Mills_and_1000G_gold_standard.indels.hg38.vcf.gz         # turns out gunzipping wasn't necesaru
+# indexing vcfs 
+tabix dbsnp_146.hg38.vcf.gz                                               # running
+gatk IndexFeatureFile -I dbsnp_146.hg38.vcf.gz                            # 
+tabix Mills_and_1000G_gold_standard.indels.hg38.vcf.gz                            # not needed (already done)
+gatk IndexFeatureFile -I Mills_and_1000G_gold_standard.indels.hg38.vcf.gz         # done
 
 # Create BWA index
-bwa index Homo_sapiens_assembly38.fasta.gz              # still running
+nohup bwa index Homo_sapiens_assembly38.fasta.gz  > index.log 2>&1 &                # with nohup still running
 ```
 
 
