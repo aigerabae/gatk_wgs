@@ -62,8 +62,8 @@ wget ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg38/Mills_and_1000
 3 I don't have Homo_sapiens_assembly38.known_indels.vcf.gz so we'll do without it
 
 # indexing vcfs 
-tabix dbsnp_146.hg38.vcf.gz                                               # running
-gatk IndexFeatureFile -I dbsnp_146.hg38.vcf.gz                            # 
+tabix dbsnp_146.hg38.vcf.gz                                               # done
+gatk IndexFeatureFile -I dbsnp_146.hg38.vcf.gz                            # running
 tabix Mills_and_1000G_gold_standard.indels.hg38.vcf.gz                            # not needed (already done)
 gatk IndexFeatureFile -I Mills_and_1000G_gold_standard.indels.hg38.vcf.gz         # done
 
