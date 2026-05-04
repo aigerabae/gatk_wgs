@@ -68,7 +68,7 @@ tabix Mills_and_1000G_gold_standard.indels.hg38.vcf.gz                          
 gatk IndexFeatureFile -I Mills_and_1000G_gold_standard.indels.hg38.vcf.gz         # done
 
 # Create BWA index
-nohup bwa index Homo_sapiens_assembly38.fasta.gz  > index.log 2>&1 &                # with nohup still running
+nohup bwa index Homo_sapiens_assembly38.fasta.gz  > index.log 2>&1 &                # done
 ```
 
 
